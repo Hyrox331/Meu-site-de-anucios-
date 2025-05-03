@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AdPay - Menu de Pagamento</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-roxo:  #6c5ce7;
+      --color-azul:  #0984e3;
+      --color-vermelho: #d63031;
+      --color-branco: #ffffff;
+      --color-preto: #2d3436;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background: linear-gradient(135deg, var(--color-roxo), var(--color-preto));
+      color: var(--color-branco);
+      position: relative;
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: 'AdPay';
+      position: absolute;
+      top: 40%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 10rem;
+      color: rgba(255,255,255,0.05);
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    .container {
+      position: relative; z-index: 1;
+      max-width: 1000px; width: 100%;
+      background: rgba(0,0,0,0.6);
+      padding: 2rem; border-radius: 16px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.2);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+      color: var(--color-azul);
+      font-size: 2.5rem;
+    }
+    .payment-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.5rem;
+    }
+    .option {
+      background: var(--color-preto);
+      border: 2px solid var(--color-roxo);
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: transform .2s, border-color .3s;
+    }
+    .option:hover {
+      transform: scale(1.05);
+      border-color: var(--color-vermelho);
+    }
+    .option strong {
+      display: block;
+      font-size: 1.2rem;
+      margin-bottom: .5rem;
+    }
+    .currency {
+      font-size: .9rem;
+      opacity: .8;
+      margin-bottom: .5rem;
+    }
+    .duration {
+      font-size: 1rem;
+      color: var(--color-branco);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Escolha um valor para pagar com anúncios</h1>
+    <div class="payment-options" id="paymentOptions"></div>
+  </div>
+
+  <script>
+    const container = document.getElementById('paymentOptions');
+    // Gerar valores: R$1 a R$1600 (exponencial)
+    const valores = [1,5,10,25,50,100,200,400,800,1600];
+    valores.forEach(reais => {
+      const kz    = (reais * 125).toLocaleString('pt-BR');
+      const mins  = Math.ceil(reais * 1.5);
+      const div   = document.createElement('div');
+      div.className = 'option';
+      div.innerHTML = `
+        <strong>R$ ${reais.toFixed(2)}</strong>
+        <div class="currency">Kz ${kz}</div>
+        <div class="duration">${mins} min de anúncios</div>
+      `;
+      div.onclick = () => {
+        // navega direto para a página de anúncios
+        window.location.href = `watch-ad.html?min=${mins}`;
+      };
+      container.appendChild(div);
+    });
+  </script>
+</body>
+</html>
